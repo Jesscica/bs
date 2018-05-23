@@ -19,15 +19,12 @@ import java.util.Set;
 public class Main {
     @RequestMapping("/ce")
     @ResponseBody
-    String home(String content) throws IOException {
-
-
+    String[]  home(String content) throws IOException {
         String argu = "G:\\Tencent Files\\593844323\\FileRecv\\JnaTest_V1\\JnaTest_V1";
         BufferedReader b2 = new BufferedReader(new FileReader("G:\\Tencent Files\\593844323\\FileRecv\\JnaTest_V1\\JnaTest_V1\\in\\stop (2).txt"));
-
-        String system_charset = "UTF-8";
+       // String system_charset = "UTF-8";
         int charset_type = 1;
-        int init_flag = NlpirTest.CLibrary.Instance.NLPIR_Init(argu, charset_type, "0");
+        NlpirTest.CLibrary.Instance.NLPIR_Init(argu, charset_type, "0");
         String nativeBytes = null;
         try {
             nativeBytes = NlpirTest.CLibrary.Instance.NLPIR_ParagraphProcess(content, 0);
@@ -50,12 +47,11 @@ public class Main {
         cutSet.retainAll(set1);
         //没有违规词
         if (CollectionUtils.isEmpty(cutSet)){
-            return "当前广告没有违规词";
+           return null;
         }
-        String result = "";
-        System.out.println("违规词汇是:" + cutSet.toString());
-        result+="违规词个数有:"+cutSet.size()+"个,违规词汇是:" + cutSet.toString();
-        return result;
+        String[] data = new String[cutSet.size()];
+        cutSet.toArray(data);
+        return data;
     }
 
     public static void main(String[] args) throws Exception {
